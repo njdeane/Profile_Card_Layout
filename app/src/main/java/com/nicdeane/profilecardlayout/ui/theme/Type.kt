@@ -1,5 +1,6 @@
 package com.nicdeane.profilecardlayout.ui.theme
 
+import androidx.compose.material.Text
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
@@ -12,6 +13,12 @@ val Typography = Typography(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp
+    ),
+    h5 = TextStyle(
+        fontWeight = FontWeight.SemiBold,                     // modifies theme app wide for these params. good to use less code!
+        fontSize = 22.sp,
+        letterSpacing = 1.sp
+
     )
     /* Other default text styles to override
     button = TextStyle(

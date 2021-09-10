@@ -5,6 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
@@ -60,13 +61,13 @@ fun AppBar() { // color is coming from Theme.kt primary color
 
 @Composable
 fun ProfileCard() {
-    Card(
+    Card( // changed corner radius via changing Shape.kt medium which is the default
         modifier = Modifier
             .padding(16.dp)
             .fillMaxWidth() // how to change shadow color?
             .wrapContentHeight(align = Alignment.Top),
         elevation = 8.dp,
-        backgroundColor = Color.White
+        backgroundColor = Color.White,
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
