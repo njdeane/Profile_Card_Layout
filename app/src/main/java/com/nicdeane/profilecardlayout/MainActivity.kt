@@ -8,6 +8,8 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
@@ -33,11 +35,27 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun MainScreen() {
-    Surface(
-        modifier = Modifier.fillMaxSize(),
-    ) {
-        ProfileCard()
+    Scaffold(topBar = { AppBar() }) {
+        Surface(
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            ProfileCard()
+        }
     }
+}
+
+@Composable
+fun AppBar() { // color is coming from Theme.kt primary color
+    TopAppBar(
+        navigationIcon = {
+            Icon(
+                Icons.Default.Menu, contentDescription = "Menu",
+                Modifier.padding(horizontal = 12.dp)
+            )
+        },
+        title = { Text(text = "Disney Pirates") },
+        elevation = 0.dp // gets rid of app bar line somewhat but how to make invisible?
+    )
 }
 
 @Composable
