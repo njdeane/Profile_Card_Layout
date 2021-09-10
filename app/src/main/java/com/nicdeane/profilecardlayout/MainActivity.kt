@@ -40,7 +40,11 @@ fun MainScreen() {
         Surface(
             modifier = Modifier.fillMaxSize(),
         ) {
-            ProfileCard()
+            Column {
+                ProfileCard()
+                ProfileCard()
+            }
+
         }
     }
 }
@@ -63,7 +67,7 @@ fun AppBar() { // color is coming from Theme.kt primary color
 fun ProfileCard() {
     Card( // changed corner radius via changing Shape.kt medium which is the default
         modifier = Modifier
-            .padding(16.dp)
+            .padding(top = 8.dp, bottom = 4.dp, start = 16.dp, end = 16.dp)
             .fillMaxWidth() // how to change shadow color?
             .wrapContentHeight(align = Alignment.Top),
         elevation = 8.dp,
@@ -107,7 +111,7 @@ fun ProfilePicture() {
         shape = CircleShape,
         border = BorderStroke(2.dp, color = profileImageGreen),
         modifier = Modifier.padding(16.dp),
-        elevation = 4.dp
+//        elevation = 4.dp
     ) {
         Image(
             painter = painterResource(id = R.drawable.donald_duck),
