@@ -12,12 +12,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -46,24 +48,25 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun UsersApplication() {
-    val navController = rememberNavController()
+    val navController: NavHostController = rememberNavController()
     NavHost(navController = navController, startDestination = "users_list") {
         composable("users_list") {
             MainScreen(userList, navController)
         }
-        composable(route = "user_details/{userId}",
+        composable(
+            route = "user_details/{userId}",
             arguments = listOf(navArgument("userId") {
                 type = NavType.IntType
             })
         ) { navBackStackEntry ->
-            UserProfileDetailScreen(navBackStackEntry.arguments!!.getInt("userId"))
+            UserProfileDetailScreen(navBackStackEntry.arguments!!.getInt("userId"), navController)
         }
     }
 }
 
 @Composable
 fun MainScreen(userProfiles: List<UserProfile>, navController: NavHostController?) {
-    Scaffold(topBar = { AppBar() }) {
+    Scaffold(topBar = { AppBar("Disney Pirates", Icons.Default.Menu) {} }) {
         Surface(
             modifier = Modifier.fillMaxSize(),
         ) {
@@ -84,9 +87,16 @@ fun MainScreen(userProfiles: List<UserProfile>, navController: NavHostController
 }
 
 @Composable
-fun UserProfileDetailScreen(userId: Int) {
-    val userProfile = userList.first { userProfile -> userId == userProfile.id  }
-    Scaffold(topBar = { AppBar() }) {
+fun UserProfileDetailScreen(userId: Int, navController: NavHostController?) {
+    val userProfile = userList.first { userProfile -> userId == userProfile.id }
+    Scaffold(topBar = {
+        AppBar(
+            "Android Sucks",
+            icon = Icons.Default.ArrowBack,
+        ) {
+            navController?.navigateUp()
+        }
+    }) {
         Surface(
             modifier = Modifier.fillMaxSize(),
         ) {
@@ -104,15 +114,21 @@ fun UserProfileDetailScreen(userId: Int) {
 
 
 @Composable
-fun AppBar() { // color is coming from Theme.kt primary color
+fun AppBar(
+    title: String,
+    icon: ImageVector,
+    iconClickAction: () -> Unit
+) { // color is coming from Theme.kt primary color
     TopAppBar(
         navigationIcon = {
             Icon(
-                Icons.Default.Menu, contentDescription = "Menu",
-                Modifier.padding(horizontal = 12.dp)
+                icon, "{$title}",
+                modifier = Modifier
+                    .padding(horizontal = 12.dp)
+                    .clickable { iconClickAction.invoke() }
             )
         },
-        title = { Text(text = "Disney Pirates") },
+        title = { Text(text = title) },
         // backgroundColor = Color.Transparent, // doesn't work
         elevation = 4.dp // gets rid of app bar line somewhat but how to make invisible?
     )
@@ -199,6 +215,6 @@ fun MainPreview() {
 @Composable
 fun UserProfileDetailPreview() {
     MyTheme {
-        UserProfileDetailScreen(userId = 0)
+        UserProfileDetailScreen(userId = 0, null)
     }
 }
