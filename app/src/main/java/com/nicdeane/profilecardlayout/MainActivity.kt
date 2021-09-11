@@ -41,8 +41,8 @@ fun MainScreen() {
             modifier = Modifier.fillMaxSize(),
         ) {
             Column {
-                ProfileCard()
-                ProfileCard()
+                ProfileCard(userList[0])
+                ProfileCard(userList[1])
             }
 
         }
@@ -64,8 +64,9 @@ fun AppBar() { // color is coming from Theme.kt primary color
 }
 
 @Composable
-fun ProfileCard() {
-    Card( // changed corner radius via changing Shape.kt medium which is the default
+fun ProfileCard(userProfile: UserProfile) {
+    Card(
+        // changed corner radius via changing Shape.kt medium which is the default
         modifier = Modifier
             .padding(top = 8.dp, bottom = 4.dp, start = 16.dp, end = 16.dp)
             .fillMaxWidth() // how to change shadow color?
@@ -78,26 +79,26 @@ fun ProfileCard() {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start
         ) {
-            ProfilePicture()
-            ProfileContent()
+            ProfilePicture(userProfile.drawableID, userProfile.status)
+            ProfileContent(userProfile.name, userProfile.status)
         }
     }
 }
 
 @Composable
-fun ProfileContent() {
+fun ProfileContent(userName: String, status: Boolean) {
     Column(
         modifier = Modifier
             .padding(8.dp)
             .fillMaxWidth()
     ) {
         Text(
-            text = "Donald Duck",
+            text = userName,
             style = MaterialTheme.typography.h5
         )
         CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
             Text(
-                text = "Active",
+                text = if (status) "Active" else "Offline",
                 style = MaterialTheme.typography.body2
             )
         }
@@ -106,15 +107,21 @@ fun ProfileContent() {
 }
 
 @Composable
-fun ProfilePicture() {
+fun ProfilePicture(drawableId: Int, status: Boolean) {
     Card(
         shape = CircleShape,
-        border = BorderStroke(2.dp, color = profileImageGreen),
+        border = BorderStroke(
+            2.dp,
+            color = if (status) {
+                profileImageGreen // Compose might not need the curly braces, should I put in or not?
+            } else {
+                Color.Red
+            }
+        ),
         modifier = Modifier.padding(16.dp),
-//        elevation = 4.dp
     ) {
         Image(
-            painter = painterResource(id = R.drawable.donald_duck),
+            painter = painterResource(drawableId),
             contentDescription = "Profile Image",
             modifier = Modifier.size(72.dp),
             contentScale = ContentScale.Crop
